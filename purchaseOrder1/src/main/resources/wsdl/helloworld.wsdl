@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions 
+	name="SoapService" 
+	targetNamespace="http://example.com/services/helloworld" 
+	xmlns:tns="http://example.com/services/helloworld"
+  	xmlns:types="http://example.com/types/helloworld" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:soapenv = "http://www.w3.org/2003/05/soap-envelope"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+ 
+  <wsdl:types>
+    <xsd:schema 
+    	targetNamespace="http://example.com/types/helloworld" 
+    	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    	elementFormDefault="qualified"
+      	attributeFormDefault="unqualified" 
+      	version="1.0" >
+
+      <xsd:element name="purchase">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="purchaseid" type="xsd:long" />
+            <xsd:element name="userid" type="xsd:long" />
+            <xsd:element name="sitename" type="xsd:string" />
+            <xsd:element name="projectname" type="xsd:string" />
+            <xsd:element name="projectType" type="xsd:string" />
+            <xsd:element name="siteProjectid" type="xsd:string" />
+            <xsd:element name="shiptoLocationCode" type="xsd:long" />
+            <xsd:element name="duedate" type="xsd:date" />
+            <xsd:element name="quantity" type="xsd:long" />
+            <xsd:element name="totalcost" type="xsd:long" />
+            <xsd:element name="status" type="xsd:string" />
+            <xsd:element name="productname" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="status">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="status" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="TransactionInput">
+    <wsdl:part name="purchase" element="types:purchase" />
+  </wsdl:message>
+
+  <wsdl:message name="TransactionOutput">
+    <wsdl:part name="status" element="types:status" />
+  </wsdl:message>
+
+  <wsdl:portType name="HelloWorld_PortType">
+    <wsdl:operation name="sayHello">
+      <wsdl:input message="tns:TransactionInput" />
+      <wsdl:output message="tns:TransactionOutput" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="HelloWorld_SoapBinding" type="tns:HelloWorld_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="sayHello">
+      <soap:operation soapAction="http://example.com/services/helloworld/sayHello" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="Soap_Service">
+    <wsdl:documentation>Soap Application</wsdl:documentation>
+    <wsdl:port name="Soapservice_Port" binding="tns:Soapservice_SoapBinding">
+      <soap:address location="http://localhost:8080/example/ws/helloworld" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
